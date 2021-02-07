@@ -1,7 +1,7 @@
 
 ## Laravel Backend Elaniin API
 
-This repository containts a RESTfull API that follows the JSON:API development specifications. The authorization token 
+This repository containts a RESTful API that follows the JSON:API development specifications. The authorization token 
 is created and passed on login function (Database dump is located inside dbdump folder path=/dbdump/elaniin_db.sql).
 
 The API covers the following content: 
