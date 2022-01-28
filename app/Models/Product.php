@@ -14,6 +14,8 @@ class Product extends Model
      *
      * @var array
      */
+
+     //Cuando es requerido que el usuario solo acceda a ciertos campos de la BD
     protected $fillable = [
         'name',
         'quantity',
@@ -30,7 +32,7 @@ class Product extends Model
      *  @param  \Illuminate\Http\Request  $search
      *  @return \Illuminate\Http\Response
      *  @return array
-     */ 
+     */
     public function scopeFilter($query, $search)
     {
         $query->when($search ?? null, function($query, $search){

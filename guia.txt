@@ -1,0 +1,91 @@
+php artisan make:project laravel/laravel my-project 7.*
+
+crear base de datos
+
+configurar env
+
+ir a api en routes y configurar el middleware
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::post('/logout',[AuthController::class,'logout'])->name('auth.logout');
+    Route::resource('/pacientes', PacienteController::class);
+});
+
+php artisan make:model Paciente -mcr //creando el modelo y controlador siempre en singular
+- en el model     protected $guarded = [];
+- en el migrate poner las columnas para la tabla
+
+php artisan migrate // creando la migracion del modelo a la bd
+
+php artisan make:request createPacienteRequest // creando la request
+
+- en el controlador  $pacientes = Paciente::get();
+public function index()
+    {
+        //Tomando todos los registros de la tabla pacientes
+        $pacientes = Paciente::get();
+
+        //retornando el formato JSON para la APi
+        return response()->json([
+            "pacientes" => $pacientes
+        ],200);
+    }
+
+    public function store(createPacienteRequest $request)
+    {
+        //Sirve para guardar en la BD el registro de la tabla
+        $paciente = Paciente::create([
+            'name' => $request->name,
+            'dui' => $request->dui,
+            'sexo' => $request->sexo,
+            'edad' => $request->edad
+        ]);
+
+        return response()->json([
+            'mensaje' => 'hayta'
+        ],200);
+    }
+
+    en el request
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function rules()
+    {
+        return [
+            //Es para validar las request que vienen desde la APi
+            'name'              => 'required',
+            'dui'               => 'required',
+            'sexo'              => 'required',
+            'edad'              => 'required'
+        ];
+    }
+
+
+    instalar el passport composer require laravel/passport "~9.0"
+    php artisan migrate
+    php artisan passport:install
+
+    auth services provder en boot
+    - Passport::routes();
+
+    en auth.php
+    en guards api driver de token a passport
+
+    cpn eso se configura el passport
+
+    hay que crear usuarios para ello crear el AuthController y despues agregar
+    composer require laravel/ui:^2.4
+   php artisan ui vue --auth --crea todo los crud para usuarios
+
+
+   create un request para paciente por las autenticaciones
+se crea request para crear y editar y estos trabajan con los metodos del controller
+
+se agregan en la api.php
+Route::post('/register', [AuthController::class, 'registerUser'])->name('auth.register');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+
+
+al haber creado un usuario, loggeado se consigue el token y con este podremos hacer las request

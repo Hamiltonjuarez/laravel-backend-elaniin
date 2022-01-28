@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PacienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,8 +31,8 @@ Route::post('/forgot-password',[AuthController::class,'forgotPassword'])->name('
 Route::post('/reset-password',[AuthController::class,'resetPassword'])->name('auth.reset');
 
 Route::group(['middleware' => ['auth:api']], function () {
-    Route::post('/logout',[AuthController::class,'logout'])->name('auth.logout'); 
+    Route::post('/logout',[AuthController::class,'logout'])->name('auth.logout');
     Route::resource('/users', UserController::class)->only(['index','store','show','update','destroy']);
     Route::resource('/products', ProductController::class)->only(['index','store','show','update','destroy']);
+    Route::resource('/pacientes', PacienteController::class);
 });
-
